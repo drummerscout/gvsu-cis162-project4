@@ -116,31 +116,43 @@ public class ZipCodeDataBase{
      * Constructor for finding Cities within a Radius
      *********************************************************************/
     public ArrayList withinRadius(int pZip, int pRadius){
-
-    }
-
-    /**********************************************************************
-     * Constructor for finding the furthest Zip
-     *********************************************************************/
-    public ZipCode furthest (int pZip){
-
-        //         int max = furthest[0];
-        // 
-        //         for ( int t = 1; i<furthest.size(); t++){
-        //             if(max > furthest[t])
-        //                 return max;
-        //             else
-        //                 return null;
-        //         }
         return null;
     }
 
     /**********************************************************************
-     * Testing all methods
+     * Returns the furthest zip code from the given zip code.
+     * @param pZip the given zip code
+     * @return the zip code farest from pZip
      *********************************************************************/
-    public static void main (String args[]){
-                 ZipCode.Search(al);
-        //         System.out.println (Search);
-    }
+    public ZipCode furthest (int pZip){
 
-}  
+        int maxDistance = -1;
+        ZipCode maxZipCode = null;
+
+        for ( ZipCode zipCode : List){
+            int distance = distance(pZip, zipCode.getZip());
+            if (distance  > maxDistance){
+                maxZipCode = zipCode;
+                maxDistance = distance;
+            }
+        }
+        return maxZipCode;
+
+        //         int maxNum = -100;
+        //         int[] nums = {4, 7, 9, 3, 10};
+        //         for(int num : nums)
+        //         {
+        //             if (num > maxNum)
+        //                 maxNum = num;
+        //         }
+        //         return maxNum;
+        /**********************************************************************
+         * Testing all methods
+         *********************************************************************/
+        //         public static void main (String args[]){
+        //             ZipCode.Search(al);
+        //             //         System.out.println (Search);
+        //         }
+
+    }  
+}
