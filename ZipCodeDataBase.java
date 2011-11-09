@@ -79,22 +79,22 @@ public class ZipCodeDataBase{
     public int distance (int zip1, int zip2){
         ZipCode z1 = findZip (zip1);
         ZipCode z2 = findZip (zip2);
+
+        if(z1 == null || z2 == null)
+            return -1;
+
         final int EARTH_RADIUS = 3959;
 
-        int Distance = 0;
-        if(z1 != null && z2 !=null){
-            double Lati1=Math.toRadians(z1.getLati());
-            double Long1=Math.toRadians(z1.getLong());
-            double Lati2=Math.toRadians(z1.getLati());
-            double Long2=Math.toRadians(z1.getLong());            
+        double lati1=Math.toRadians(z1.getLati());
+        double long1=Math.toRadians(z1.getLong());
+        double lati2=Math.toRadians(z1.getLati());
+        double long2=Math.toRadians(z1.getLong());            
 
-            double p1= Math.cos(Lati1)*Math.cos(Long1)*Math.cos(Lati2)*Math.cos(Long2);
-            double p2= Math.cos(Lati1)*Math.sin(Long1)*Math.cos(Lati2)*Math.sin(Long2);
-            double p3= Math.sin(Lati1)*Math.sin(Lati2);
-            Distance = (int) (Math.acos(p1+p2+p3) * EARTH_RADIUS);
-        }
+        double p1= Math.cos(lati1)*Math.cos(long1)*Math.cos(lati2)*Math.cos(long2);
+        double p2= Math.cos(lati1)*Math.sin(long1)*Math.cos(lati2)*Math.sin(long2);
+        double p3= Math.sin(lati1)*Math.sin(lati2);
+        return (int) (Math.acos(p1+p2+p3) * EARTH_RADIUS);
 
-        return Distance;
     }
 
     /**********************************************************************
