@@ -9,79 +9,158 @@
 
 public class ZipCode
 {
-    int zipCode;
-    String city, state;
-    double lat;
-    double lon;
+    //these are my variables
+    int zip;
+    String city;
+    String state;
+    double latitude;
+    double longitude;
 
-    /*********************************************************************
-     * Inital consturctur.  This sets up a basic zip code with a 
+    /*****************************************************************
+     * Inital constructor.  This sets up a basic zip code with a 
      * zip code, city, state, latitude, longitude.
      *
-     *@param zipcode, a city, state, latitude, longitude
-     ********************************************************************/
+     * @param pZip
+     * @return none
+     ****************************************************************/
 
     public ZipCode (int pZip){
-        zipCode = this.zipCode; 
+        zip = pZip; 
         city = "UNKNOWN";
         state = "ST";
-        lat = 0.0;
-        lon = 0.0;
+        latitude = 0.0;
+        longitude = 0.0;
     }
+
+    /*****************************************************************
+     * This sets up a working zipCode with all the info needed.
+     *
+     * @param pZip, pCity, pState, pLAt, pLon
+     ****************************************************************/
 
     public ZipCode (int pZip, String pCity, String pState, 
-    double pLat, double pLon){
-
-        zipCode = pZip;
+        double pLat, double pLon){
+        zip = pZip;
         city = pCity;
         state = pState;
-        lat = pLat;
-        lon = pLon;
+        latitude = pLat;
+        longitude = pLon;
     }
+
+    /*****************************************************************
+     * Returns the zip code(the number zip).
+     *
+     * @return zip
+     ****************************************************************/
 
     public int getZip(){
-        return zipCode;
+        return zip;
     }
 
+    /****************************************************************
+     * Sets pZip equal to zip.
+     *
+     * @param pZip
+     ***************************************************************/
+
     public void setZip( int pZip){
-        zipCode = pZip;
+        zip = pZip;
     }
+
+    /***************************************************************
+     * Returns the name of the city.
+     *
+     * @return city
+     **************************************************************/
 
     public String getCity(){
         return city;
     }
 
+    /**************************************************************
+     * Set city equal to pCity.
+     *
+     * @param pCity
+     *************************************************************/
+
     public void setCity(String pCity){
         city = pCity;
     }
+
+    /*************************************************************
+     * Returns the state.
+     *
+     * @return state
+     ************************************************************/
 
     public String getState(){
         return state;
     }
 
+    /************************************************************
+     * Sets state equal pState.
+     *
+     * @param pState
+     ***********************************************************/
+
     public void setState(String pState){
         state = pState;
     }
 
+    /************************************************************
+     * Returns latitude.
+     *
+     * @return latitude
+     ***********************************************************/
+
     public double getLat(){
-        return lat;
+        return latitude;
     }
+
+    /***********************************************************
+     * Sets pLat equal to latitude.
+     *
+     * @param pLat
+     **********************************************************/
 
     public void setLat(double pLat){
-        lat = pLat;
+        latitude = pLat;
     }
+
+    /**********************************************************
+     * Returns longitude.
+     *
+     * @return longitude
+     *********************************************************/
 
     public double getLon(){
-        return lon;
+        return longitude;
     }
 
+    /*********************************************************
+     * Sets pLon equal to longitude.
+     *
+     * @param pLon
+     ********************************************************/
     public void setLon(double pLon){
-        lon = pLon;
+        longitude = pLon;
     }
+
+    /*********************************************************
+     * Returns a string with info.
+     *
+     * @return String
+     *********************************************************/
 
     public String toString(){
-        return ( city + (", ") + state + (" ") + zipCode); 
+        return ( city + (", ") + state + (" ") + zip); 
     }
+
+    /**********************************************************
+     * Returns equals.
+     *
+     *@return equals
+     **********************************************************/
 
     public boolean equals(){
         return false;

@@ -15,34 +15,34 @@ public class ZipCodeDataBase{
     // Here is the one and only varible.
     private Map<Integer,ZipCode> map;
 
-    /**********************************************************************
-     * Constructor.  This sets up an array with all the info.  
-     *********************************************************************/
+    //This is were I used a hash map to make the code run faster.
+    //Hash's use a key and and value. There just like the array.
     public ZipCodeDataBase()
     {
         map = new HashMap<Integer,ZipCode>();
     }
 
     /**********************************************************************
-     * Constructor for organizing all of the information
+     * This reads in a text file with which we use the information from
+     * to base or city, state, zip code, latitude, and longitude points 
+     * off of.  
+     *
+     * @param String
      *********************************************************************/
     public void readZipCodeData(String filename){
         String info;
         try{
-            // open the data file
             Scanner fileReader = new Scanner(new File("zipcodes.txt")); 
             Scanner lineReader;
 
-            // continue while there is more data to read
             while(fileReader.hasNext()) {
 
-                // read one line of data
                 info = fileReader.nextLine();
 
                 lineReader = new Scanner(info);
                 lineReader.useDelimiter(",");
 
-                // read the items one at a time
+                //here is what we are getting in from the text doc
                 int Zip = lineReader.nextInt();
                 String City = lineReader.next();
                 String State = lineReader.next();
@@ -56,21 +56,27 @@ public class ZipCodeDataBase{
         }catch(FileNotFoundException error) {
             System.out.println("File not found ");
 
-            // problem reading the fil
+            // problem with the file
         }catch(IOException error){
-            System.out.println("Oops! Something went wrong.");
+            System.out.println("Oops! Something went wrong. Sorry :( ");
         }
     }
 
     /**********************************************************************
-     * Constructor for finding the correct ZipCode
+     * This will bring all info from the given zip code.
+     *
+     * @param zip the number
+     * @return zip
      *********************************************************************/
     public ZipCode findZip (int Zip){
         return map.get(Zip);
     }
 
     /**********************************************************************
-     * Constructor for distance between two places
+     * This will find the distance between 2 zip codes.  
+     *
+     * @param int (zip) int (zip)  (next two zip codes)
+     * @return distance between two zip codes
      *********************************************************************/
     public int distance (int zip1, int zip2){
         ZipCode z1 = findZip (zip1);
@@ -94,7 +100,10 @@ public class ZipCodeDataBase{
     }
 
     /**********************************************************************
-     * Constructor for finding by state
+     * This will give you a city and state with the inputed zip code.
+     *
+     * @param String
+     * @return zip code, city, and state
      *********************************************************************/
     public ArrayList search(String str){
         ArrayList<ZipCode> zipCodes = new ArrayList<ZipCode>();
@@ -111,23 +120,24 @@ public class ZipCodeDataBase{
      * This returns all zip codes within the distence of the zip code you
      * set it to
      *
-     *@param 
+     * @param int (zip) & int (radius in miles)
+     * @return all zip codes in the given radius
      *********************************************************************/
     public ArrayList withinRadius(int pZip, int pRadius){
-        ArrayList radius = new ArrayList <Integer>();
+        ArrayList withinCircle = new ArrayList <ZipCode>();
 
-        for (ZipCode zipCode : map.values()) {
-            int distance = distance (pZip, zipCode.getZip());   
-            if (distance <= pRadius)
-                radius.add(zipCode.getZip());
+        for (ZipCode zipCode : map.values()) {   
+            if (distance (pZip, zipCode.getZip()) <= pRadius)
+                withinCircle.add(zipCode);
         }
-        return radius; 
+        return withinCircle; 
     }
 
     /**********************************************************************
      * Returns the furthest zip code from the given zip code.
+     *
      * @param pZip the given zip code
-     * @return the zip code farest from pZip
+     * @return the zip code farest from the set zip code
      *********************************************************************/
     public ZipCode furthest (int pZip){
 
@@ -153,7 +163,7 @@ public class ZipCodeDataBase{
     //         }
     //         return maxNum;
     /**********************************************************************
-     * The main to test some of the methods.
+     * The main to test some of the methods.  And they all work.
      *********************************************************************/
     public static void main (String [] args){
         ZipCodeDataBase pizza = new ZipCodeDataBase();

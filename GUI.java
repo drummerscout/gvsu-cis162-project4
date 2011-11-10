@@ -7,6 +7,7 @@ import java.util.*;
  * GUI for a Zip Code Database
  * 
  * @author Scott Grissom
+ * @author "also edited by Taylor Countryman"
  * @version October 7, 2011
  ************************************************************/
 public class GUI extends JPanel{
@@ -140,7 +141,7 @@ public class GUI extends JPanel{
      * Calculate distances between two zip codes if the textfields
      * constain valid integers
      ****************************************************************/ 
-    private void calcdistance (){
+    private void distance (){
         int z1 = Integer.parseInt(zip1.getText());
         int z2 = Integer.parseInt(zip2.getText()); 
         int dist = database.distance(z1,z2);
@@ -153,7 +154,7 @@ public class GUI extends JPanel{
     }
 
     /*****************************************************************
-     * find a zip code
+     * finds a zip code
      ****************************************************************/ 
     private void findZip (){
 
@@ -169,7 +170,7 @@ public class GUI extends JPanel{
     }
 
     /*****************************************************************
-     * find a zip code
+     * finds a zip code that is the furthest away form a given point
      ****************************************************************/ 
     private void findFurthest (){
 
@@ -260,7 +261,7 @@ public class GUI extends JPanel{
                 findZipsWithinRadius();
             // distance button
             else if (e.getSource() == distance)
-                calcdistance();
+                distance();
             // furthest
             else if (e.getSource() == furthest)
                 findFurthest();
