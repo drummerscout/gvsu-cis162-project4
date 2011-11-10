@@ -1,8 +1,10 @@
 /**************************************************************************
- * Second Class In Project 4
+ * This is were all the really stuff happens.  In this class, we will 
+ * create a test class and scan in the text file, and preform all the 
+ * actions on the zip codes.  
  * 
  * @author Taylor Countryman
- * @version Project 4
+ * @version Project 4 11-05-2011
  **************************************************************************/
 
 import java.util.ArrayList;
@@ -10,15 +12,15 @@ import java.util.*;
 import java.io.*;
 
 public class ZipCodeDataBase{
-    // instance variables - replace the example below with your own
-    private ArrayList <ZipCode> list;
+    // Here is the one and only varible.
+    private Map<Integer,ZipCode> map;
 
     /**********************************************************************
-     * Constructor for objects of class ZipCodeDataBase
+     * Constructor.  This sets up an array with all the info.  
      *********************************************************************/
     public ZipCodeDataBase()
     {
-        list = new ArrayList <ZipCode>();
+        map = new HashMap<Integer,ZipCode>();
     }
 
     /**********************************************************************
@@ -47,7 +49,7 @@ public class ZipCodeDataBase{
                 double Long = lineReader.nextDouble();
                 double Lati = lineReader.nextDouble();    
                 ZipCode zip = new ZipCode (Zip,City,State,Long,Lati);
-                list.add(zip);
+                map.put(Zip, zip);
             }
 
             // could not find file
@@ -64,12 +66,7 @@ public class ZipCodeDataBase{
      * Constructor for finding the correct ZipCode
      *********************************************************************/
     public ZipCode findZip (int Zip){
-        ZipCode zipcode = null;
-        for (ZipCode newZip : list){
-            if(Zip == newZip.getZip())
-                zipcode = newZip;
-        }
-        return zipcode;
+        return map.get(Zip);
     }
 
     /**********************************************************************
@@ -103,7 +100,7 @@ public class ZipCodeDataBase{
         ArrayList<ZipCode> zipCodes = new ArrayList<ZipCode>();
         str = str.toUpperCase();
 
-        for (ZipCode myZip : list){
+        for (ZipCode myZip : map.values()){
             if(myZip.getCity().startsWith(str)|| myZip.getState().startsWith(str))
                 zipCodes.add(myZip);
         }
@@ -119,7 +116,7 @@ public class ZipCodeDataBase{
     public ArrayList withinRadius(int pZip, int pRadius){
         ArrayList radius = new ArrayList <Integer>();
 
-        for (ZipCode zipCode : list) {
+        for (ZipCode zipCode : map.values()) {
             int distance = distance (pZip, zipCode.getZip());   
             if (distance <= pRadius)
                 radius.add(zipCode.getZip());
@@ -137,7 +134,7 @@ public class ZipCodeDataBase{
         int maxDistance = -1;
         ZipCode maxZipCode = null;
 
-        for ( ZipCode zipCode : list){
+        for ( ZipCode zipCode : map.values()){
             int distance = distance(pZip, zipCode.getZip());
             if (distance  > maxDistance){
                 maxZipCode = zipCode;
