@@ -1,24 +1,24 @@
-import java.util.ArrayList;
-import java.util.*;
-import java.io.*;
 /**************************************************************************
  * Second Class In Project 4
  * 
  * @author Taylor Countryman
  * @version Project 4
  **************************************************************************/
+
+import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
+
 public class ZipCodeDataBase{
     // instance variables - replace the example below with your own
-    private ArrayList <ZipCode> List;
-    private ArrayList <String> Search;
-    private ArrayList <Integer> radius;
+    private ArrayList <ZipCode> list;
 
     /**********************************************************************
      * Constructor for objects of class ZipCodeDataBase
      *********************************************************************/
     public ZipCodeDataBase()
     {
-        List = new ArrayList <ZipCode>();
+        list = new ArrayList <ZipCode>();
     }
 
     /**********************************************************************
@@ -47,7 +47,7 @@ public class ZipCodeDataBase{
                 double Long = lineReader.nextDouble();
                 double Lati = lineReader.nextDouble();    
                 ZipCode zip = new ZipCode (Zip,City,State,Long,Lati);
-                List.add(zip);
+                list.add(zip);
             }
 
             // could not find file
@@ -64,14 +64,12 @@ public class ZipCodeDataBase{
      * Constructor for finding the correct ZipCode
      *********************************************************************/
     public ZipCode findZip (int Zip){
-        ZipCode toreturn = null;
-        for (int i=0; i< List.size(); i++){
-            if (List.get(i).getZip() == Zip){
-                toreturn = List.get(i);
-            }
+        ZipCode zipcode = null;
+        for (ZipCode newZip : list){
+            if(Zip == newZip.getZip())
+                zipcode = newZip;
         }
-        return toreturn;
-
+        return zipcode;
     }
 
     /**********************************************************************
@@ -86,14 +84,14 @@ public class ZipCodeDataBase{
 
         final int EARTH_RADIUS = 3959;
 
-        double lati1=Math.toRadians(z1.getLati());
-        double long1=Math.toRadians(z1.getLong());
-        double lati2=Math.toRadians(z1.getLati());
-        double long2=Math.toRadians(z1.getLong());            
+        double lat1=Math.toRadians(z1.getLat());
+        double lon1=Math.toRadians(z1.getLon());
+        double lat2=Math.toRadians(z2.getLat());
+        double lon2=Math.toRadians(z2.getLon());            
 
-        double p1= Math.cos(lati1)*Math.cos(long1)*Math.cos(lati2)*Math.cos(long2);
-        double p2= Math.cos(lati1)*Math.sin(long1)*Math.cos(lati2)*Math.sin(long2);
-        double p3= Math.sin(lati1)*Math.sin(lati2);
+        double p1= Math.cos(lat1)*Math.cos(lon1)*Math.cos(lat2)*Math.cos(lon2);
+        double p2= Math.cos(lat1)*Math.sin(lon1)*Math.cos(lat2)*Math.sin(lon2);
+        double p3= Math.sin(lat1)*Math.sin(lat2);
         return (int) (Math.acos(p1+p2+p3) * EARTH_RADIUS);
 
     }
@@ -101,13 +99,13 @@ public class ZipCodeDataBase{
     /**********************************************************************
      * Constructor for finding by state
      *********************************************************************/
-    public ArrayList Search(String str){
+    public ArrayList search(String str){
         ArrayList<ZipCode> zipCodes = new ArrayList<ZipCode>();
         str = str.toUpperCase();
 
-        for (int i=0;i<List.size();i++){
-            if(List.get(i).getCity().startsWith(str)||List.get(i).getState().startsWith(str))
-                zipCodes.add(List.get(i));
+        for (ZipCode myZip : list){
+            if(myZip.getCity().startsWith(str)|| myZip.getState().startsWith(str))
+                zipCodes.add(myZip);
         }
         return zipCodes;
     }
@@ -119,11 +117,11 @@ public class ZipCodeDataBase{
      *@param 
      *********************************************************************/
     public ArrayList withinRadius(int pZip, int pRadius){
-        radius = new ArrayList <Integer>();
+        ArrayList radius = new ArrayList <Integer>();
 
-        for (ZipCode zipCode : List) {
+        for (ZipCode zipCode : list) {
             int distance = distance (pZip, zipCode.getZip());   
-            if (distance == pRadius)
+            if (distance <= pRadius)
                 radius.add(zipCode.getZip());
         }
         return radius; 
@@ -139,7 +137,7 @@ public class ZipCodeDataBase{
         int maxDistance = -1;
         ZipCode maxZipCode = null;
 
-        for ( ZipCode zipCode : List){
+        for ( ZipCode zipCode : list){
             int distance = distance(pZip, zipCode.getZip());
             if (distance  > maxDistance){
                 maxZipCode = zipCode;
@@ -148,7 +146,7 @@ public class ZipCodeDataBase{
         }
         return maxZipCode;
     }
-
+    // Example to help me understand!
     //         int maxNum = -100;
     //         int[] nums = {4, 7, 9, 3, 10};
     //         for(int num : nums)
@@ -158,15 +156,16 @@ public class ZipCodeDataBase{
     //         }
     //         return maxNum;
     /**********************************************************************
-     * Testing all methods
+     * The main to test some of the methods.
      *********************************************************************/
     public static void main (String [] args){
         ZipCodeDataBase pizza = new ZipCodeDataBase();
         pizza.readZipCodeData("zipcodes.txt");
-        pizza.findZip(49418);
-        pizza.findZip(00001000);
-        //pizza.search(al);
+        System.out.println(pizza.findZip(82930));
+        System.out.println(pizza.distance(49401, 90001));
+        System.out.println(pizza.search("all"));
+        System.out.println(pizza.withinRadius(49401, 10));
+        System.out.println(pizza.furthest(49401));
     }
-
 }  
 

@@ -12,7 +12,7 @@ import java.util.*;
 public class GUI extends JPanel{
 
     /** the analyzer that does all the real work */
-    ZipCodeDatabase database;
+    ZipCodeDataBase database;
 
     /** Buttons to initiate each action */
     JButton distance, find, within, search, furthest;
@@ -46,13 +46,13 @@ public class GUI extends JPanel{
     public GUI(){
 
         // instantiate the analyzer and read the data file    
-        database = new ZipCodeDatabase();
+        database = new ZipCodeDataBase();
         database.readZipCodeData("zipcodes.txt");
 
         // establish the frame
         myGUI = new JFrame();
         myGUI.setSize(400,200);
-        myGUI.setTitle("Zip Code Database");    
+        myGUI.setTitle("Taylor Countryman");    
 
         // create display area
         results = new JTextArea(20,20);
@@ -93,6 +93,13 @@ public class GUI extends JPanel{
         // register the listeners
         ButtonListener listener = new ButtonListener();
 
+        // add action listeners
+        find.addActionListener (listener);
+        within.addActionListener (listener);
+        search.addActionListener (listener);
+        furthest.addActionListener (listener);
+        distance.addActionListener (listener);  
+
         // set up File menu
         fileMenu = new JMenu("File");
         quitItem = new JMenuItem("Quit");
@@ -118,34 +125,31 @@ public class GUI extends JPanel{
      ****************************************************************/ 
     private void searchByName(){
 
-        // retrieve the zip codes with the matching String
+        // 
         ArrayList <ZipCode> list = database.search(name.getText());
 
         // dislay the results
-        results.setText("zip codes that begin with "+name.getText()+"\n\n");
+        results.setText("zip codes that begin with "            
+            + name.getText()+"\n\n");
         for (ZipCode z : list){
             results.append(z.toString() + "\n");
-        }   
-    }
+        }
+    }   
 
     /*****************************************************************
      * Calculate distances between two zip codes if the textfields
      * constain valid integers
      ****************************************************************/ 
-    private void calcDistance (){
-
-        // find distance between the two zip codes
+    private void calcdistance (){
         int z1 = Integer.parseInt(zip1.getText());
         int z2 = Integer.parseInt(zip2.getText()); 
         int dist = database.distance(z1,z2);
 
-        // get String description for each zip code
         String loc1 = database.findZip(z1).toString();
         String loc2 = database.findZip(z2).toString();
 
-        results.setText("The distance between \n" 
+        results.setText("The distance betwen \n" 
             + loc1+" and \n"+loc2+" is " + dist+" miles");
-
     }
 
     /*****************************************************************
@@ -169,13 +173,31 @@ public class GUI extends JPanel{
      ****************************************************************/ 
     private void findFurthest (){
 
+        // search for the zip code
+        int z1 = Integer.parseInt(zip1.getText());
+        ZipCode z = database.furthest(z1);
+
+        // if no zip code found
+        if (z == null)
+            results.setText("no city found with zip code " + z1);
+        else
+            results.setText(z.toString());
+
     }
-
+
     /*****************************************************************
      * find zips within a specific radius
      ****************************************************************/ 
     private void findZipsWithinRadius (){
+        // search for the zip code
+        int z1 = Integer.parseInt(zip1.getText());
 
+        // find the specified radius
+        int z2 = Integer.parseInt(radius.getText());
+        ArrayList<ZipCode> zipRadius = new ArrayList <ZipCode>();
+        zipRadius = database.withinRadius(z1, z2);
+
+        results.setText(zipRadius.toString());
     }
 
     /*****************************************************************
@@ -183,14 +205,11 @@ public class GUI extends JPanel{
      ****************************************************************/ 
     private void openFile(){
 
-        // create File Chooser so that it starts at the current directory
         String userDir = System.getProperty("user.dir");
         JFileChooser fc = new JFileChooser(userDir);
 
-        // show File Chooser and wait for user selection
         int returnVal = fc.showOpenDialog(this);
 
-        // did the user select a file?
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             String filename = fc.getSelectedFile().getName();
             database.readZipCodeData(filename);          
@@ -214,7 +233,6 @@ public class GUI extends JPanel{
         }catch(NumberFormatException e){
             isValid = false;
             JOptionPane.showMessageDialog(null, "Enter an integer in " + label);
-
         }    
         return isValid;
     }
@@ -231,7 +249,22 @@ public class GUI extends JPanel{
             // extract the button that was clicked
             JComponent buttonPressed = (JComponent) e.getSource();
 
+            // find button
+            if (e.getSource() == find)   
+                findZip(); 
+            // search button
+            else if (e.getSource() == search)
+                searchByName();
+            // within button
+            else if (e.getSource() == within)
+                findZipsWithinRadius();
+            // distance button
+            else if (e.getSource() == distance)
+                calcdistance();
+            // furthest
+            else if (e.getSource() == furthest)
+                findFurthest();
+
         }
     }
-
 }
