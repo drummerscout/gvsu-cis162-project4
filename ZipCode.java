@@ -40,4 +40,7 @@ public class ZipCode
     public double getLong(){
         return Long;
     }
+    public boolean equals(){
+        return false;
+    }
 }

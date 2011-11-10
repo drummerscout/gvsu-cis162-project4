@@ -11,6 +11,7 @@ public class ZipCodeDataBase{
     // instance variables - replace the example below with your own
     private ArrayList <ZipCode> List;
     private ArrayList <String> Search;
+    private ArrayList <Integer> radius;
 
     /**********************************************************************
      * Constructor for objects of class ZipCodeDataBase
@@ -27,7 +28,7 @@ public class ZipCodeDataBase{
         String info;
         try{
             // open the data file
-            Scanner fileReader = new Scanner(new File("ZipCode.txt")); 
+            Scanner fileReader = new Scanner(new File("zipcodes.txt")); 
             Scanner lineReader;
 
             // continue while there is more data to read
@@ -101,22 +102,31 @@ public class ZipCodeDataBase{
      * Constructor for finding by state
      *********************************************************************/
     public ArrayList Search(String str){
-        Search = new ArrayList <String>();
-        str.toUpperCase();
+        ArrayList<ZipCode> zipCodes = new ArrayList<ZipCode>();
+        str = str.toUpperCase();
 
         for (int i=0;i<List.size();i++){
-            if(str.equals (List.get(i).getCity())){
-            }
+            if(List.get(i).getCity().startsWith(str)||List.get(i).getState().startsWith(str))
+                zipCodes.add(List.get(i));
         }
-
-        return Search;
-    }    
+        return zipCodes;
+    }
 
     /**********************************************************************
-     * Constructor for finding Cities within a Radius
+     * This returns all zip codes within the distence of the zip code you
+     * set it to
+     *
+     *@param 
      *********************************************************************/
     public ArrayList withinRadius(int pZip, int pRadius){
-        return null;
+        radius = new ArrayList <Integer>();
+
+        for (ZipCode zipCode : List) {
+            int distance = distance (pZip, zipCode.getZip());   
+            if (distance == pRadius)
+                radius.add(zipCode.getZip());
+        }
+        return radius; 
     }
 
     /**********************************************************************
@@ -137,22 +147,26 @@ public class ZipCodeDataBase{
             }
         }
         return maxZipCode;
+    }
 
-        //         int maxNum = -100;
-        //         int[] nums = {4, 7, 9, 3, 10};
-        //         for(int num : nums)
-        //         {
-        //             if (num > maxNum)
-        //                 maxNum = num;
-        //         }
-        //         return maxNum;
-        /**********************************************************************
-         * Testing all methods
-         *********************************************************************/
-        //         public static void main (String args[]){
-        //             ZipCode.Search(al);
-        //             //         System.out.println (Search);
-        //         }
+    //         int maxNum = -100;
+    //         int[] nums = {4, 7, 9, 3, 10};
+    //         for(int num : nums)
+    //         {
+    //             if (num > maxNum)
+    //                 maxNum = num;
+    //         }
+    //         return maxNum;
+    /**********************************************************************
+     * Testing all methods
+     *********************************************************************/
+    public static void main (String [] args){
+        ZipCodeDataBase pizza = new ZipCodeDataBase();
+        pizza.readZipCodeData("zipcodes.txt");
+        pizza.findZip(49418);
+        pizza.findZip(00001000);
+        //pizza.search(al);
+    }
 
-    }  
-}
+}  
+
